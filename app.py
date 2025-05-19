@@ -40,7 +40,7 @@ def load_vectorizer():
     return joblib.load("tfidf_vectorizer.pkl")
 
 # model = load_model()
-vectorizer = load_vectorizer()
+#vectorizer = load_vectorizer()
 
 # 📋 App Layout
 st.title("🛍️ Ecommerce Customer Reviews Sentiment Analysis App")
