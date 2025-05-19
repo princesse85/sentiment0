@@ -34,8 +34,8 @@ st.markdown(
 
 
 # Load the model
-with open('sentiment_model.pkl', 'rb') as f:
-    sentiment_model = pickle.load(f)
+import joblib
+model = joblib.load("sentiment_model.pkl")
 
 # Load the vectorizer
 with open('tfidf_vectorizer.pkl', 'rb') as f:
