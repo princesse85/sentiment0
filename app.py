@@ -1,10 +1,10 @@
 import streamlit as st
-import pickle
+import joblib
 
+# 🌿 Custom CSS
 st.markdown(
     """
     <style>
-    /* Style for the text area */
     div.stTextArea > div > textarea {
         font-size: 16px;
         padding: 12px;
@@ -12,7 +12,6 @@ st.markdown(
         border-radius: 10px;
         background-color: #f9f9f9;
     }
-    /* Style for the button */
     div.stButton > button {
         background-color: #4CAF50;
         color: white;
@@ -22,73 +21,48 @@ st.markdown(
         border-radius: 8px;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         transition: background-color 0.3s ease;
-        justify-content: center;
     }
     div.stButton > button:hover {
-        background-color:rgba(69, 80, 160, 0.34);
+        background-color: rgba(69, 80, 160, 0.34);
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-#Load Models and Vectorizer
+# 📦 Load model and vectorizer
 @st.cache_resource
-def load_models():
-    try:
-        return {
-            "Logistic Regression": joblib.load("logistic_regression_model.pkl"),
-            "Random Forest": joblib.load("random_forest_model.pkl"),
-        }
-    except Exception as e:
-        st.error(f"⚠️ Error loading models: {e}")
-        return {}
+def load_model():
+    return joblib.load("sentiment_model.pkl")
 
 @st.cache_resource
 def load_vectorizer():
-    try:
-        return joblib.load("tfidf_vectorizer.pkl")
-    except Exception as e:
-        st.error(f"⚠️ Error loading vectorizer: {e}")
-        return None
+    return joblib.load("tfidf_vectorizer.pkl")
 
-models = load_models()
+model = load_model()
+vectorizer = load_vectorizer()
 
-
-
-
-
-
-
-
-
-
-# Load the model
-with open('sentiment_model.pkl', 'rb') as f:
-    sentiment_model = pickle.load(f)
-
-# Load the vectorizer
-with open('tfidf_vectorizer.pkl', 'rb') as f:
-    tfidf_vectorizer = pickle.load(f)
-
-## App Layout and Title
-st.title("  Ecommerce Customer Reviews Sentiment Analysis App  ")
+# 📋 App Layout
+st.title("🛍️ Ecommerce Customer Reviews Sentiment Analysis App")
 
 st.write("""
-        Welcome to our Ecommerce Customer Reviews Analysis App. 
-        This simple tool analyzes customer reviews to show you the sentiment content of the review. 
-        It uses machine learning to quickly highlight positive and negative feedback, helping you make better business decisions.""")
+Welcome to our Ecommerce Customer Reviews Analysis App. 
+This tool analyzes customer feedback to detect **positive** or **negative** sentiment using machine learning.
+""")
 
-# Text input
-user_input = st.text_area("Input The Text That You Want Analyzed Down Below: ", height=100)
+# 📝 User input
+user_input = st.text_area("✍️ Enter a customer review below:", height=100)
 
-
-# Prediction button
+# 🔍 Prediction
 if st.button("Predict"):
-    # Transform user input to TF-IDF features
-    input_features = tfidf_vectorizer.transform([user_input])
-    #  Predict sentiment
-    prediction = sentiment_model.predict(input_features)
+    if user_input.strip() == "":
+        st.warning("Please enter some text.")
+    else:
+        input_vec = vectorizer.transform([user_input])
+        prediction = model.predict(input_vec)[0]
+        sentiment = "Positive 😊" if prediction == 1 else "Negative 😠"
+        st.success(f"Predicted sentiment: **{sentiment}**")
+
 
     # Display the result
     st.write(f"The Text inputed is a ", prediction[0] , "Sentiment")
