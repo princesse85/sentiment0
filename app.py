@@ -39,7 +39,7 @@ def load_model():
 def load_vectorizer():
     return joblib.load("tfidf_vectorizer.pkl")
 
-model = load_model()
+# model = load_model()
 vectorizer = load_vectorizer()
 
 # 📋 App Layout
