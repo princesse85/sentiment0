@@ -6,7 +6,7 @@ st.set_page_config(page_title="Sentiment Analysis", page_icon="💬", layout="wi
 
 #Load Models and Vectorizer
 @st.cache_resource
-import joblib as jb
+
 def load_models():
     try:
         return {
