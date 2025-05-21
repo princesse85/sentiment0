@@ -5,3 +5,6 @@ pandas
 numpy
 seaborn
 matplotlib
+streamlit
+scikit-learn
+joblib
