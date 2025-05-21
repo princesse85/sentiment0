@@ -1,11 +1,9 @@
 streamlit
 scikit-learn
+matplotlib
 joblib
+pickle
 pandas
 numpy
 seaborn
-matplotlib
-streamlit
 scikit-learn
-joblib
-pickle5
